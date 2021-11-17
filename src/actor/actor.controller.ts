@@ -11,10 +11,10 @@ export class ActorController {
   async findAll(): Promise<ResultMessage> {
     return await this.actorService
       .findAll()
-      .then((result) => {
+      .then((actors) => {
         return {
           statusCode: HttpStatus.OK,
-          result: result,
+          result: actors,
         };
       })
       .catch((err) => {
