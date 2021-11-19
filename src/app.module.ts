@@ -5,6 +5,8 @@ import { ActorModule } from './actor/actor.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Actor } from './actor/entity/actor.entity';
 import { ConfigModule } from '@nestjs/config';
+import { FilmModule } from './film/film.module';
+import { Film } from "./film/entities/film.entity";
 
 @Module({
   imports: [
@@ -19,9 +21,10 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: 'cgv',
-      entities: [Actor],
+      entities: [Actor, Film],
       synchronize: false,
     }),
+    FilmModule,
   ],
   controllers: [AppController],
   providers: [AppService],
