@@ -19,19 +19,45 @@ export class ActorController {
       })
       .catch((err) => {
         return {
-          statusCode: HttpStatus.NOT_FOUND,
+          statusCode: HttpStatus.BAD_REQUEST,
           result: err.message,
         };
       });
   }
 
   @Get('/:id')
-  findOne(@Param('id') id: number) {
-    return this.actorService.findOne(id);
+  async findOne(@Param('id') id: number) {
+    return await this.actorService
+      .findOne(id)
+      .then((actor) => {
+        return {
+          statusCode: HttpStatus.OK,
+          result: actor,
+        };
+      })
+      .catch((err) => {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          result: err.message,
+        };
+      });
   }
 
   @Post('/create')
-  async save(@Body() actorCreateDto: ActorCreateDto) {
-    return await this.actorService.save(actorCreateDto);
+  async save(@Body() actorCreateDto: ActorCreateDto): Promise<ResultMessage> {
+    return await this.actorService
+      .save(actorCreateDto)
+      .then((actor) => {
+        return {
+          statusCode: HttpStatus.OK,
+          result: actor,
+        };
+      })
+      .catch((err) => {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          result: err.message,
+        };
+      });
   }
 }
