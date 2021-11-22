@@ -38,22 +38,77 @@ export class CinemaController {
   }
 
   @Get()
-  findAll() {
-    return this.cinemaService.findAll();
+  async findAll(): Promise<ResultMessage> {
+    return await this.cinemaService
+      .findAll()
+      .then((cinema) => {
+        return {
+          statusCode: HttpStatus.OK,
+          result: cinema,
+        };
+      })
+      .catch((err) => {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          result: err.message,
+        };
+      });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cinemaService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.cinemaService
+      .findOne(+id)
+      .then((cinema) => {
+        return {
+          statusCode: HttpStatus.OK,
+          result: cinema,
+        };
+      })
+      .catch((err) => {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          result: err.message,
+        };
+      });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCinemaDto: UpdateCinemaDto) {
-    return this.cinemaService.update(+id, updateCinemaDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateCinemaDto: UpdateCinemaDto,
+  ) {
+    return await this.cinemaService
+      .update(+id, updateCinemaDto)
+      .then((cinema) => {
+        return {
+          statusCode: HttpStatus.OK,
+          result: cinema,
+        };
+      })
+      .catch((err) => {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          result: err.message,
+        };
+      });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cinemaService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.cinemaService
+      .remove(+id)
+      .then((cinema) => {
+        return {
+          statusCode: HttpStatus.OK,
+          result: cinema,
+        };
+      })
+      .catch((err) => {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          result: err.message,
+        };
+      });
   }
 }

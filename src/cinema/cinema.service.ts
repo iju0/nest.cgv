@@ -17,7 +17,7 @@ export class CinemaService {
     if (hasCinema) {
       throw new Error('이미 등록된 정보가 있습니다.');
     }
-    const cinema = await this.cinemaRepository.create();
+    const cinema = await this.cinemaRepository.create(createCinemaDto);
     cinema.name = createCinemaDto.name;
     return await this.cinemaRepository.save(cinema);
   }
