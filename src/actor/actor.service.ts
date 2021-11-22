@@ -1,9 +1,9 @@
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Actor } from './entity/actor.entity';
-import { Repository } from 'typeorm';
-import { ActorCreateDto } from './dto/actor.create.dto';
-import { ResultMessage } from '../result.message';
+import { Actor } from './entities/actor.entity';
+import { DeleteResult, Repository } from 'typeorm';
+import { CreateActorDto } from './dto/create-actor.dto';
+import { UpdateActorDto } from './dto/update-actor.dto';
 
 @Injectable()
 export class ActorService {
@@ -25,15 +25,37 @@ export class ActorService {
     return count > 0;
   }
 
-  async save(actorCreateDto: ActorCreateDto): Promise<Actor> {
-    const actorIsExist = await this.isExist(actorCreateDto.name);
+  async save(createActorDto: CreateActorDto): Promise<Actor> {
+    const actorIsExist = await this.isExist(createActorDto.name);
 
     if (actorIsExist) {
       throw new NotFoundException('이미 데이터가 존재합니다.');
     }
-    const actor = new Actor();
-    actor.name = actorCreateDto.name;
-    await this.actorRepository.save(actor);
-    return await this.actorRepository.findOne(actor);
+    const actor = await this.actorRepository.create(createActorDto);
+    return await this.actorRepository.save(actor);
+  }
+
+  async update(id: number, updateActorDto: UpdateActorDto): Promise<Actor> {
+    const actor = await this.actorRepository.findOne(id);
+    if (!actor) {
+      throw new NotFoundException('데이터를 찾을 수 없습니다.');
+    }
+
+    actor.name = updateActorDto.name;
+    return await this.actorRepository.save(actor);
+  }
+
+  async remove(id: number): Promise<Actor> {
+    const actor = await this.actorRepository.findOne(id);
+    if (!actor) {
+      throw new Error('데이터를 찾을 수 없습니다.');
+    }
+
+    const { affected } = await this.actorRepository.delete(id);
+    if (affected < 0) {
+      throw new Error('삭제 처리 중 장애가 발생하였습니다.');
+    }
+
+    return actor;
   }
 }

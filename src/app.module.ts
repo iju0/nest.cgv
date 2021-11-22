@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ActorModule } from './actor/actor.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Actor } from './actor/entity/actor.entity';
+import { Actor } from './actor/entities/actor.entity';
 import { ConfigModule } from '@nestjs/config';
 import { FilmModule } from './film/film.module';
 import { Film } from "./film/entities/film.entity";
