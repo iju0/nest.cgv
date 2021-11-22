@@ -17,7 +17,7 @@ import { UpdateActorDto } from './dto/update-actor.dto';
 export class ActorController {
   constructor(private readonly actorService: ActorService) {}
 
-  @Get('/')
+  @Get()
   async findAll(): Promise<ResultMessage> {
     return await this.actorService
       .findAll()
@@ -35,7 +35,7 @@ export class ActorController {
       });
   }
 
-  @Get('/:id')
+  @Get(':id')
   async findOne(@Param('id') id: number) {
     return await this.actorService
       .findOne(id)
@@ -53,7 +53,7 @@ export class ActorController {
       });
   }
 
-  @Post('/create')
+  @Post()
   async save(@Body() createActorDto: CreateActorDto): Promise<ResultMessage> {
     return await this.actorService
       .save(createActorDto)
@@ -71,7 +71,7 @@ export class ActorController {
       });
   }
 
-  @Patch('/:id')
+  @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateActorDto: UpdateActorDto,
@@ -92,7 +92,7 @@ export class ActorController {
       });
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   async remove(@Param('id') id: string): Promise<ResultMessage> {
     return await this.actorService
       .remove(+id)
