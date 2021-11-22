@@ -17,8 +17,5 @@ nest.cgv
 
 예시: login.controller, login.dto, login.entity ... 
 
-# commit message convension
-
-
 # modeling
 ![img](./model.png)
