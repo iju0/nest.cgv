@@ -13,36 +13,41 @@ export class CinemaService {
   ) {}
 
   async create(createCinemaDto: CreateCinemaDto) {
-    const hasCinema = await this.isExist(createCinemaDto.name);
-
+    const hasCinema = await this.cinemaRepository.findOne(createCinemaDto);
     if (hasCinema) {
       throw new Error('이미 등록된 정보가 있습니다.');
     }
-
-    const cinema = new Cinema();
+    const cinema = await this.cinemaRepository.create();
     cinema.name = createCinemaDto.name;
-
-    await this.cinemaRepository.save(cinema);
-    return await this.cinemaRepository.findOne(cinema);
+    return await this.cinemaRepository.save(cinema);
   }
 
   async isExist(name: string): Promise<boolean> {
     return (await this.cinemaRepository.count({ name })) > 0;
   }
 
-  findAll() {
-    return `This action returns all cinema`;
+  async findAll(): Promise<Cinema[]> {
+    return await this.cinemaRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cinema`;
+  async findOne(id: number): Promise<Cinema> {
+    return await this.cinemaRepository.findOne(id);
   }
 
-  update(id: number, updateCinemaDto: UpdateCinemaDto) {
-    return `This action updates a #${id} cinema`;
+  async update(id: number, updateCinemaDto: UpdateCinemaDto) {
+    const cinema = await this.findOne(id);
+    if (!cinema) {
+      throw new Error('등록된 정보를 찾을 수 없습니다.');
+    }
+    cinema.name = updateCinemaDto.name;
+    return await this.cinemaRepository.save(cinema);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cinema`;
+  async remove(id: number) {
+    const cinema = await this.findOne(id);
+    if (!cinema) {
+      throw new Error('등록된 정보를 찾을 수 없습니다.');
+    }
+    return await this.cinemaRepository.remove(cinema);
   }
 }
