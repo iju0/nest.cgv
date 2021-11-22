@@ -50,12 +50,6 @@ export class ActorService {
     if (!actor) {
       throw new Error('데이터를 찾을 수 없습니다.');
     }
-
-    const { affected } = await this.actorRepository.delete(id);
-    if (affected < 0) {
-      throw new Error('삭제 처리 중 장애가 발생하였습니다.');
-    }
-
-    return actor;
+    return await this.actorRepository.remove(actor);
   }
 }
