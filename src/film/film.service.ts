@@ -12,23 +12,41 @@ export class FilmService {
     private filmRepository: Repository<Film>,
   ) {}
 
-  async create(createFilmDto: CreateFilmDto) {
-    return 'This action returns created film ';
+  async create(createFilmDto: CreateFilmDto): Promise<Film> {
+    const film = new Film();
+    film.title = createFilmDto.title;
+    film.summary = createFilmDto.summary;
+    film.rate = createFilmDto.rate;
+    film.releaseDate = createFilmDto.releaseDate;
+    film.runningTime = createFilmDto.runningTime;
+    film.regDate = new Date();
+    return await this.filmRepository.save(film);
   }
 
-  findAll() {
-    return `This action returns all film`;
+  async findAll() {
+    return await this.filmRepository.find();
   }
 
   async findOne(id: number) {
     return await this.filmRepository.findOne(id);
   }
 
-  update(id: number, updateFilmDto: UpdateFilmDto) {
-    return `This action updates a #${id} film`;
+  async update(id: number, updateFilmDto: UpdateFilmDto) {
+    const film = new Film();
+    film.id = id;
+    film.title = updateFilmDto.title;
+    film.summary = updateFilmDto.summary;
+    film.rate = updateFilmDto.rate;
+    film.runningTime = updateFilmDto.runningTime;
+    film.releaseDate = updateFilmDto.releaseDate;
+    return await this.filmRepository.save(film);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} film`;
+  async remove(id: number) {
+    const film = await this.filmRepository.findOne(id);
+    if (!film) {
+      throw new Error('등록된 정보를 찾을 수 없습니다.');
+    }
+    return await this.filmRepository.remove(film);
   }
 }
