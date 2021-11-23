@@ -10,13 +10,22 @@ import {
 import { FilmService } from './film.service';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
+import { ActorService } from '../actor/actor.service';
 
 @Controller('film')
 export class FilmController {
-  constructor(private readonly filmService: FilmService) {}
+  constructor(
+    private readonly filmService: FilmService,
+    private readonly actorService: ActorService,
+  ) {}
 
   @Post()
   async create(@Body() createFilmDto: CreateFilmDto) {
+    /// TODO: film 등록시 모든 연관된 데이터가 등록되어야 함
+    /// film_actor 테이블
+    /// film_genre 테이블
+    /// film_country 테이블
+    /// film_director 테이블
     return await this.filmService.create(createFilmDto);
   }
 
