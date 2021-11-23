@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Actor } from './entities/actor.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -25,11 +25,11 @@ export class ActorService {
     return count > 0;
   }
 
-  async save(createActorDto: CreateActorDto): Promise<Actor> {
+  async create(createActorDto: CreateActorDto): Promise<Actor> {
     const actorIsExist = await this.isExist(createActorDto.name);
 
     if (actorIsExist) {
-      throw new NotFoundException('이미 데이터가 존재합니다.');
+      throw new InternalServerErrorException('이미 데이터가 존재합니다.');
     }
     const actor = await this.actorRepository.create(createActorDto);
     return await this.actorRepository.save(actor);

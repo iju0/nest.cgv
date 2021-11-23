@@ -12,8 +12,15 @@ export class FilmService {
     private filmRepository: Repository<Film>,
   ) {}
 
-  async create(createFilmDto: CreateFilmDto) {
-    return 'This action returns created film ';
+  async create(createFilmDto: CreateFilmDto): Promise<Film> {
+    const film = new Film();
+    film.title = createFilmDto.title;
+    film.summary = createFilmDto.summary;
+    film.rate = createFilmDto.rate;
+    film.releaseDate = createFilmDto.releaseDate;
+    film.runningTime = createFilmDto.runningTime;
+    film.regDate = new Date();
+    return await this.filmRepository.save(film);
   }
 
   findAll() {
