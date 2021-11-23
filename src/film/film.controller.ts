@@ -10,7 +10,6 @@ import {
 import { FilmService } from './film.service';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
-import { ResultMessage } from '../result.message';
 
 @Controller('film')
 export class FilmController {
@@ -22,22 +21,22 @@ export class FilmController {
   }
 
   @Get()
-  findAll() {
-    return this.filmService.findAll();
+  async findAll() {
+    return await this.filmService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.filmService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.filmService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFilmDto: UpdateFilmDto) {
-    return this.filmService.update(+id, updateFilmDto);
+  async update(@Param('id') id: string, @Body() updateFilmDto: UpdateFilmDto) {
+    return await this.filmService.update(+id, updateFilmDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.filmService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.filmService.remove(+id);
   }
 }

@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ActorService } from './actor.service';
 import { CreateActorDto } from './dto/create-actor.dto';
-import { ResultMessage } from '../result.message';
 import { UpdateActorDto } from './dto/update-actor.dto';
 
 @Controller('actor')

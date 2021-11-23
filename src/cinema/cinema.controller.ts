@@ -11,7 +11,6 @@ import {
 import { CinemaService } from './cinema.service';
 import { CreateCinemaDto } from './dto/create-cinema.dto';
 import { UpdateCinemaDto } from './dto/update-cinema.dto';
-import { ResultMessage } from '../result.message';
 
 @Controller('cinema')
 export class CinemaController {
