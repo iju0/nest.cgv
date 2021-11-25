@@ -10,14 +10,10 @@ import {
 import { FilmService } from './film.service';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
-import { ActorService } from '../actor/actor.service';
 
 @Controller('film')
 export class FilmController {
-  constructor(
-    private readonly filmService: FilmService,
-    private readonly actorService: ActorService,
-  ) {}
+  constructor(private readonly filmService: FilmService) {}
 
   @Post()
   async create(@Body() createFilmDto: CreateFilmDto) {

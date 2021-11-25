@@ -12,6 +12,7 @@ import { Cinema } from './cinema/entities/cinema.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './transform.interceptor';
 import { ErrorInterceptor } from './error.interceptor';
+import { FilmActor } from './film/entities/film-actor.entity';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { ErrorInterceptor } from './error.interceptor';
       username: process.env.DATABASE_USERNAME || 'database username',
       password: process.env.DATABASE_PASSWORD || 'database password',
       database: 'cgv',
-      entities: [Actor, Film, Cinema],
+      entities: [Actor, Film, Cinema, FilmActor],
       synchronize: false,
     }),
     FilmModule,

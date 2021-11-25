@@ -3,12 +3,12 @@ import { FilmService } from './film.service';
 import { FilmController } from './film.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Film } from './entities/film.entity';
-import { ActorService } from '../actor/actor.service';
 import { Actor } from '../actor/entities/actor.entity';
+import { FilmActor } from './entities/film-actor.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Film, Actor])],
+  imports: [TypeOrmModule.forFeature([Film, Actor, FilmActor])],
   controllers: [FilmController],
-  providers: [FilmService, ActorService],
+  providers: [FilmService],
 })
 export class FilmModule {}
