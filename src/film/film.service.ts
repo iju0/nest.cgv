@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,6 +19,8 @@ export class FilmService {
   ) {}
 
   async create(createFilmDto: CreateFilmDto) {
+    /// TODO: film 등록시 모든 연관된 데이터가 등록되어야 함
+
     const queryRunner = await getConnection().createQueryRunner();
     await queryRunner.startTransaction();
 

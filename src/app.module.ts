@@ -13,6 +13,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './transform.interceptor';
 import { ErrorInterceptor } from './error.interceptor';
 import { FilmActor } from './film/entities/film-actor.entity';
+import { CountryModule } from './country/country.module';
+import { Country } from './country/entities/country.entity';
 
 @Module({
   imports: [
@@ -27,11 +29,12 @@ import { FilmActor } from './film/entities/film-actor.entity';
       username: process.env.DATABASE_USERNAME || 'database username',
       password: process.env.DATABASE_PASSWORD || 'database password',
       database: 'cgv',
-      entities: [Actor, Film, Cinema, FilmActor],
+      entities: [Actor, Film, Cinema, FilmActor, Country],
       synchronize: false,
     }),
     FilmModule,
     CinemaModule,
+    CountryModule,
   ],
   controllers: [AppController],
   providers: [

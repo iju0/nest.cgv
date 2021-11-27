@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -17,30 +16,27 @@ export class ActorController {
   constructor(private readonly actorService: ActorService) {}
 
   @Get()
-  async findAll() {
-    return await this.actorService.findAll();
+  findAll() {
+    return this.actorService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return await this.actorService.findOne(id);
+  findOne(@Param('id') id: number) {
+    return this.actorService.findOne(id);
   }
 
   @Post()
-  async create(@Body() createActorDto: CreateActorDto) {
-    return await this.actorService.create(createActorDto);
+  create(@Body() createActorDto: CreateActorDto) {
+    return this.actorService.create(createActorDto);
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateActorDto: UpdateActorDto,
-  ) {
-    return await this.actorService.update(+id, updateActorDto);
+  update(@Param('id') id: string, @Body() updateActorDto: UpdateActorDto) {
+    return this.actorService.update(+id, updateActorDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.actorService.remove(+id);
+  remove(@Param('id') id: string) {
+    return this.actorService.remove(+id);
   }
 }
