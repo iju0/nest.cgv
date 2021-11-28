@@ -1,5 +1,6 @@
 import { IsDate, IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Actor } from '../../actor/entities/actor.entity';
+import { Country } from '../../country/entities/country.entity';
 
 export class CreateFilmDto {
   @IsString()
@@ -24,4 +25,7 @@ export class CreateFilmDto {
 
   @IsNotEmpty()
   actors: Actor[];
+
+  @IsNotEmpty()
+  countries: Country[];
 }

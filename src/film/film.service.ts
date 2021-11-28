@@ -6,6 +6,8 @@ import { getConnection, Repository } from 'typeorm';
 import { Film } from './entities/film.entity';
 import { FilmActor } from './entities/film-actor.entity';
 import { Actor } from '../actor/entities/actor.entity';
+import { Country } from '../country/entities/country.entity';
+import { FilmCountry } from './entities/film-country.entity';
 
 @Injectable()
 export class FilmService {
@@ -16,6 +18,10 @@ export class FilmService {
     private filmActorRepository: Repository<FilmActor>,
     @InjectRepository(Actor)
     private actorRepository: Repository<Actor>,
+    @InjectRepository(Country)
+    private countryRepository: Repository<Country>,
+    @InjectRepository(FilmCountry)
+    private filmCountryRepository: Repository<FilmCountry>,
   ) {}
 
   async create(createFilmDto: CreateFilmDto) {
@@ -27,6 +33,10 @@ export class FilmService {
     try {
       if (!createFilmDto.actors || createFilmDto.actors.length === 0) {
         throw new Error('배우 정보를 찾을 수 없습니다.');
+      }
+
+      if (!createFilmDto.countries || createFilmDto.countries.length === 0) {
+        throw new Error('국가를 선택해 주시기 바랍니다.');
       }
 
       const film = new Film();
@@ -57,6 +67,22 @@ export class FilmService {
 
       // TODO: film_director 처리
       // TODO: film_country 처리
+      const countryIds = createFilmDto.countries.map((country) => country.id);
+      const countries = await this.countryRepository.findByIds(countryIds);
+
+      if (createFilmDto.countries.length !== countries.length) {
+        throw new Error('등록되지 않은 국가 정보가 있습니다.');
+      }
+
+      if (countries && countries.length > 0) {
+        countries.map(async (country) => {
+          const filmCountry = new FilmCountry();
+          filmCountry.countryId = country.id;
+          filmCountry.filmId = id;
+          await this.filmCountryRepository.save(filmCountry);
+        });
+      }
+
       // TODO: film_genre 처리
 
       await queryRunner.commitTransaction();

@@ -15,6 +15,9 @@ import { ErrorInterceptor } from './error.interceptor';
 import { FilmActor } from './film/entities/film-actor.entity';
 import { CountryModule } from './country/country.module';
 import { Country } from './country/entities/country.entity';
+import { FilmCountry } from './film/entities/film-country.entity';
+import { SeatModule } from './seat/seat.module';
+import { Seat } from './seat/entities/seat.entity';
 
 @Module({
   imports: [
@@ -29,12 +32,13 @@ import { Country } from './country/entities/country.entity';
       username: process.env.DATABASE_USERNAME || 'database username',
       password: process.env.DATABASE_PASSWORD || 'database password',
       database: 'cgv',
-      entities: [Actor, Film, Cinema, FilmActor, Country],
+      entities: [Actor, Film, Cinema, FilmActor, Country, FilmCountry, Seat],
       synchronize: false,
     }),
     FilmModule,
     CinemaModule,
     CountryModule,
+    SeatModule,
   ],
   controllers: [AppController],
   providers: [
