@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -17,30 +16,27 @@ export class CinemaController {
   constructor(private readonly cinemaService: CinemaService) {}
 
   @Post()
-  async create(@Body() createCinemaDto: CreateCinemaDto) {
-    return await this.cinemaService.create(createCinemaDto);
+  create(@Body() createCinemaDto: CreateCinemaDto) {
+    return this.cinemaService.create(createCinemaDto);
   }
 
   @Get()
-  async findAll() {
-    return await this.cinemaService.findAll();
+  findAll() {
+    return this.cinemaService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.cinemaService.findOne(+id);
+  findOne(@Param('id') id: string) {
+    return this.cinemaService.findOne(+id);
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateCinemaDto: UpdateCinemaDto,
-  ) {
-    return await this.cinemaService.update(+id, updateCinemaDto);
+  update(@Param('id') id: string, @Body() updateCinemaDto: UpdateCinemaDto) {
+    return this.cinemaService.update(+id, updateCinemaDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.cinemaService.remove(+id);
+  remove(@Param('id') id: string) {
+    return this.cinemaService.remove(+id);
   }
 }

@@ -2,25 +2,96 @@ import { Injectable } from '@nestjs/common';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { Film } from './entities/film.entity';
+import { FilmActor } from './entities/film-actor.entity';
+import { Actor } from '../actor/entities/actor.entity';
+import { Country } from '../country/entities/country.entity';
+import { FilmCountry } from './entities/film-country.entity';
 
 @Injectable()
 export class FilmService {
   constructor(
     @InjectRepository(Film)
     private filmRepository: Repository<Film>,
+    @InjectRepository(FilmActor)
+    private filmActorRepository: Repository<FilmActor>,
+    @InjectRepository(Actor)
+    private actorRepository: Repository<Actor>,
+    @InjectRepository(Country)
+    private countryRepository: Repository<Country>,
+    @InjectRepository(FilmCountry)
+    private filmCountryRepository: Repository<FilmCountry>,
   ) {}
 
-  async create(createFilmDto: CreateFilmDto): Promise<Film> {
-    const film = new Film();
-    film.title = createFilmDto.title;
-    film.summary = createFilmDto.summary;
-    film.rate = createFilmDto.rate;
-    film.releaseDate = createFilmDto.releaseDate;
-    film.runningTime = createFilmDto.runningTime;
-    film.regDate = new Date();
-    return await this.filmRepository.save(film);
+  async create(createFilmDto: CreateFilmDto) {
+    /// TODO: film 등록시 모든 연관된 데이터가 등록되어야 함
+
+    const queryRunner = await getConnection().createQueryRunner();
+    await queryRunner.startTransaction();
+
+    try {
+      if (!createFilmDto.actors || createFilmDto.actors.length === 0) {
+        throw new Error('배우 정보를 찾을 수 없습니다.');
+      }
+
+      if (!createFilmDto.countries || createFilmDto.countries.length === 0) {
+        throw new Error('국가를 선택해 주시기 바랍니다.');
+      }
+
+      const film = new Film();
+      film.title = createFilmDto.title;
+      film.summary = createFilmDto.summary;
+      film.rate = createFilmDto.rate;
+      film.releaseDate = createFilmDto.releaseDate;
+      film.runningTime = createFilmDto.runningTime;
+      film.regDate = new Date();
+
+      const { id } = await this.filmRepository.save(film);
+      const actorIds = createFilmDto.actors.map((actor) => actor.id);
+      const actors = await this.actorRepository.findByIds(actorIds);
+
+      if (createFilmDto.actors.length !== actors.length) {
+        throw new Error('등록되지 않은 배우 정보가 있습니다.');
+      }
+
+      if (actors && actors.length > 0) {
+        // filmActor 생성
+        actors.map(async (actor) => {
+          const filmActor = new FilmActor();
+          filmActor.actorId = actor.id;
+          filmActor.filmId = id;
+          await this.filmActorRepository.save(filmActor);
+        });
+      }
+
+      // TODO: film_director 처리
+      // TODO: film_country 처리
+      const countryIds = createFilmDto.countries.map((country) => country.id);
+      const countries = await this.countryRepository.findByIds(countryIds);
+
+      if (createFilmDto.countries.length !== countries.length) {
+        throw new Error('등록되지 않은 국가 정보가 있습니다.');
+      }
+
+      if (countries && countries.length > 0) {
+        countries.map(async (country) => {
+          const filmCountry = new FilmCountry();
+          filmCountry.countryId = country.id;
+          filmCountry.filmId = id;
+          await this.filmCountryRepository.save(filmCountry);
+        });
+      }
+
+      // TODO: film_genre 처리
+
+      await queryRunner.commitTransaction();
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async findAll() {

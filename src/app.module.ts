@@ -12,6 +12,14 @@ import { Cinema } from './cinema/entities/cinema.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './transform.interceptor';
 import { ErrorInterceptor } from './error.interceptor';
+import { FilmActor } from './film/entities/film-actor.entity';
+import { CountryModule } from './country/country.module';
+import { Country } from './country/entities/country.entity';
+import { FilmCountry } from './film/entities/film-country.entity';
+import { SeatModule } from './seat/seat.module';
+import { Seat } from './seat/entities/seat.entity';
+import { SalesModule } from './sales/sales.module';
+import { Sale } from './sales/entities/sale.entity';
 
 @Module({
   imports: [
@@ -26,11 +34,23 @@ import { ErrorInterceptor } from './error.interceptor';
       username: process.env.DATABASE_USERNAME || 'database username',
       password: process.env.DATABASE_PASSWORD || 'database password',
       database: 'cgv',
-      entities: [Actor, Film, Cinema],
+      entities: [
+        Actor,
+        Film,
+        Cinema,
+        FilmActor,
+        Country,
+        FilmCountry,
+        Seat,
+        Sale,
+      ],
       synchronize: false,
     }),
     FilmModule,
     CinemaModule,
+    CountryModule,
+    SeatModule,
+    SalesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -16,27 +16,27 @@ export class FilmController {
   constructor(private readonly filmService: FilmService) {}
 
   @Post()
-  async create(@Body() createFilmDto: CreateFilmDto) {
-    return await this.filmService.create(createFilmDto);
+  create(@Body() createFilmDto: CreateFilmDto) {
+    return this.filmService.create(createFilmDto);
   }
 
   @Get()
-  async findAll() {
-    return await this.filmService.findAll();
+  findAll() {
+    return this.filmService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.filmService.findOne(+id);
+  findOne(@Param('id') id: string) {
+    return this.filmService.findOne(+id);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateFilmDto: UpdateFilmDto) {
-    return await this.filmService.update(+id, updateFilmDto);
+  update(@Param('id') id: string, @Body() updateFilmDto: UpdateFilmDto) {
+    return this.filmService.update(+id, updateFilmDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.filmService.remove(+id);
+  remove(@Param('id') id: string) {
+    return this.filmService.remove(+id);
   }
 }
