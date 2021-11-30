@@ -5,7 +5,7 @@ export class FilmActor {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'film_id' })
+  @Column()
   filmId: number;
 
   @Column({ name: 'actor_id' })
