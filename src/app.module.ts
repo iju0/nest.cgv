@@ -20,6 +20,8 @@ import { SeatModule } from './seat/seat.module';
 import { Seat } from './seat/entities/seat.entity';
 import { SalesModule } from './sales/sales.module';
 import { Sale } from './sales/entities/sale.entity';
+import { Genre } from './genre/entities/genre.entity';
+import { GenresModule } from './genre/genre.module';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { Sale } from './sales/entities/sale.entity';
         FilmCountry,
         Seat,
         Sale,
+        Genre,
       ],
       synchronize: false,
     }),
@@ -51,6 +54,7 @@ import { Sale } from './sales/entities/sale.entity';
     CountryModule,
     SeatModule,
     SalesModule,
+    GenresModule,
   ],
   controllers: [AppController],
   providers: [
