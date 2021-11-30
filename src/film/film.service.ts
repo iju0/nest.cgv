@@ -63,6 +63,8 @@ export class FilmService {
         });
       }
 
+      // TODO: film_director 처리
+      // TODO: film_country 처리
       const countryIds = createFilmDto.countries.map((country) => country.id);
       const countries = await this.countryRepository.findByIds(countryIds);
 
