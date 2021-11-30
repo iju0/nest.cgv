@@ -25,8 +25,6 @@ export class FilmService {
   ) {}
 
   async create(createFilmDto: CreateFilmDto) {
-    /// TODO: film 등록시 모든 연관된 데이터가 등록되어야 함
-
     const queryRunner = await getConnection().createQueryRunner();
     await queryRunner.startTransaction();
 
