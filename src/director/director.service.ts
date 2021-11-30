@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DirectorRepository } from './director.repository';
+import { Repository } from 'typeorm';
 import { CreateDirectorDto } from './dto/create-director.dto';
 import { Director } from './entities/director.entity';
 
 @Injectable()
 export class DirectorService {
   constructor(
-    @InjectRepository(DirectorRepository)
-    private directorRepository: DirectorRepository,
+    @InjectRepository(Director)
+    private directorRepository: Repository<Director>,
   ) {}
 
   async getDirectorById(id: number): Promise<Director> {
@@ -20,9 +20,27 @@ export class DirectorService {
     return found;
   }
 
-  // async createDirector(createDirecotrDto: CreateDirectorDto): Promise<Director>{
-  //     const {name} = createDirecotrDto;
+  async getDirectorAll(): Promise<Director[]> {
+    return this.directorRepository.find();
+  }
 
-  //     const director =
-  // }
+  async insertDirector(
+    createDirectorDto: CreateDirectorDto,
+  ): Promise<Director> {
+    const director = this.directorRepository.create(createDirectorDto);
+
+    await this.directorRepository.save(director);
+
+    return director;
+  }
+
+  async deleteDirector(id: number): Promise<void> {
+    const result = await this.directorRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException('not found');
+    }
+
+    console.log('result : ', result);
+  }
 }
