@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UpdateFilmDto } from 'src/film/dto/update-film.dto';
 import { DirectorService } from './director.service';
@@ -30,7 +31,7 @@ export class DirectorController {
 
   @Post()
   insertDirector(
-    @Body() createDirectorDto: CreateDirectorDto,
+    @Body(ValidationPipe) createDirectorDto: CreateDirectorDto,
   ): Promise<Director> {
     return this.directorService.insertDirector(createDirectorDto);
   }
@@ -43,7 +44,7 @@ export class DirectorController {
   @Patch('/:id')
   updateDirector(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateDirectorDto: UpdateDirectorDto,
+    @Body(ValidationPipe) updateDirectorDto: UpdateDirectorDto,
   ) {
     return this.directorService.updateDirector(id, updateDirectorDto);
   }
