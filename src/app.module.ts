@@ -51,6 +51,7 @@ import { Director } from './director/entities/director.entity';
         Director
       ],
       synchronize: false,
+      logging: true,
     }),
     FilmModule,
     CinemaModule,
