@@ -36,11 +36,20 @@ export class FilmService {
       film.releaseDate = createFilmDto.releaseDate;
       film.runningTime = createFilmDto.runningTime;
       film.regDate = new Date();
+
       film.actors = await Promise.all(createFilmDto.actors).then(
         async (data) => {
           const actor = this.actorRepository.create(data);
           await queryRunner.manager.save(actor);
           return actor;
+        },
+      );
+
+      film.countries = await Promise.all(createFilmDto.countries).then(
+        async (data) => {
+          const country = this.countryRepository.create(data);
+          await queryRunner.manager.save(country);
+          return country;
         },
       );
 

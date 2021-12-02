@@ -3,10 +3,10 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Actor } from '../../actor/entities/actor.entity';
+import { Country } from '../../country/entities/country.entity';
 
 @Entity()
 export class Film {
@@ -34,4 +34,8 @@ export class Film {
   @ManyToMany(() => Actor, (actor) => actor.id)
   @JoinTable({ name: 'film_actor' })
   actors: Actor[];
+
+  @ManyToMany(() => Country, (country) => country.id)
+  @JoinTable({ name: 'film_country' })
+  countries: Country[];
 }

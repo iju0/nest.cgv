@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Film } from '../../film/entities/film.entity';
 
 @Entity()
 export class Country {
@@ -7,4 +14,8 @@ export class Country {
 
   @Column()
   name: string;
+
+  @ManyToMany(() => Film, (film) => film.id)
+  @JoinTable({ name: 'film_country' })
+  films: Film[];
 }

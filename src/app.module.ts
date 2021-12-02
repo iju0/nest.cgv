@@ -48,6 +48,7 @@ import { GenresModule } from './genre/genre.module';
         Genre,
       ],
       synchronize: false,
+      logging: true,
     }),
     FilmModule,
     CinemaModule,
