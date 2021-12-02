@@ -65,7 +65,12 @@ export class FilmService {
   }
 
   async findAll() {
-    return await this.filmRepository.find();
+    return await getConnection()
+      .getRepository(Film)
+      .createQueryBuilder('film')
+      .leftJoinAndSelect('film.actors', 'actor')
+      .leftJoinAndSelect('film.countries', 'country')
+      .getMany();
   }
 
   async findOne(id: number) {

@@ -4,6 +4,7 @@ import { UpdateGenreDto } from './dto/update-genre.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from './entities/genre.entity';
 import { Repository } from 'typeorm';
+import { throws } from 'assert';
 
 
 @Injectable()
@@ -13,12 +14,12 @@ export class GenreService {
     private genreRepository: Repository<Genre>,
   ) {}
 
-
   // Create
   async create(createGenreDto: CreateGenreDto) {
     const genre = this.genreRepository.create(createGenreDto);
     return await this.genreRepository.save(genre);
   }
+
 
   // Read
   async findOne(id: number): Promise<Genre> {

@@ -31,11 +31,31 @@ export class Film {
   @Column()
   regDate: Date;
 
-  @ManyToMany(() => Actor, (actor) => actor.id)
-  @JoinTable({ name: 'film_actor' })
+  @ManyToMany(() => Actor)
+  @JoinTable({
+    name: 'film_actor',
+    joinColumn: {
+      name: 'film_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'actor_id',
+      referencedColumnName: 'id',
+    },
+  })
   actors: Actor[];
 
-  @ManyToMany(() => Country, (country) => country.id)
-  @JoinTable({ name: 'film_country' })
+  @ManyToMany(() => Country)
+  @JoinTable({
+    name: 'film_country',
+    joinColumn: {
+      name: 'film_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'country_id',
+      referencedColumnName: 'id',
+    },
+  })
   countries: Country[];
 }
