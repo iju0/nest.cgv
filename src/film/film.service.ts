@@ -8,6 +8,8 @@ import { FilmActor } from './entities/film-actor.entity';
 import { Actor } from '../actor/entities/actor.entity';
 import { Country } from '../country/entities/country.entity';
 import { FilmCountry } from './entities/film-country.entity';
+import { Genre } from '../genre/entities/genre.entity';
+import { Director } from '../director/entities/director.entity';
 
 @Injectable()
 export class FilmService {
@@ -22,6 +24,10 @@ export class FilmService {
     private countryRepository: Repository<Country>,
     @InjectRepository(FilmCountry)
     private filmCountryRepository: Repository<FilmCountry>,
+    @InjectRepository(Genre)
+    private genreRepository: Repository<Genre>,
+    @InjectRepository(Director)
+    private directorRepository: Repository<Director>,
   ) {}
 
   async create(createFilmDto: CreateFilmDto) {
@@ -53,6 +59,22 @@ export class FilmService {
         },
       );
 
+      film.genres = await Promise.all(createFilmDto.genres).then(
+        async (data) => {
+          const genre = this.genreRepository.create(data);
+          await queryRunner.manager.save(genre);
+          return genre;
+        },
+      );
+
+      film.directors = await Promise.all(createFilmDto.directors).then(
+        async (data) => {
+          const director = this.directorRepository.create(data);
+          await queryRunner.manager.save(director);
+          return director;
+        },
+      );
+
       await queryRunner.manager.save(film);
       await queryRunner.commitTransaction();
       return film;
@@ -70,6 +92,8 @@ export class FilmService {
       .createQueryBuilder('film')
       .leftJoinAndSelect('film.actors', 'actor')
       .leftJoinAndSelect('film.countries', 'country')
+      .leftJoinAndSelect('film.genres', 'genre')
+      .leftJoinAndSelect('film.directors', 'director')
       .getMany();
   }
 

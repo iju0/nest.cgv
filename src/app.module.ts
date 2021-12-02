@@ -22,6 +22,8 @@ import { SalesModule } from './sales/sales.module';
 import { Sale } from './sales/entities/sale.entity';
 import { Genre } from './genre/entities/genre.entity';
 import { GenresModule } from './genre/genre.module';
+import { Director } from './director/entities/director.entity';
+import { DirectorModule } from './director/director.module';
 
 @Module({
   imports: [
@@ -46,6 +48,7 @@ import { GenresModule } from './genre/genre.module';
         Seat,
         Sale,
         Genre,
+        Director,
       ],
       synchronize: false,
       logging: true,
@@ -56,6 +59,7 @@ import { GenresModule } from './genre/genre.module';
     SeatModule,
     SalesModule,
     GenresModule,
+    DirectorModule,
   ],
   controllers: [AppController],
   providers: [
