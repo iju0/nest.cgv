@@ -22,6 +22,8 @@ import { SalesModule } from './sales/sales.module';
 import { Sale } from './sales/entities/sale.entity';
 import { Genre } from './genre/entities/genre.entity';
 import { GenresModule } from './genre/genre.module';
+import { DirectorModule } from './director/director.module';
+import { Director } from './director/entities/director.entity';
 
 @Module({
   imports: [
@@ -31,10 +33,10 @@ import { GenresModule } from './genre/genre.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DATABASE_HOST || 'database host',
+      host: 'localhost',
       port: 3306,
-      username: process.env.DATABASE_USERNAME || 'database username',
-      password: process.env.DATABASE_PASSWORD || 'database password',
+      username: 'root',
+      password: 'root',
       database: 'cgv',
       entities: [
         Actor,
@@ -46,6 +48,7 @@ import { GenresModule } from './genre/genre.module';
         Seat,
         Sale,
         Genre,
+        Director
       ],
       synchronize: false,
     }),
@@ -55,6 +58,7 @@ import { GenresModule } from './genre/genre.module';
     SeatModule,
     SalesModule,
     GenresModule,
+    DirectorModule,
   ],
   controllers: [AppController],
   providers: [
