@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Actor } from '../../actor/entities/actor.entity';
 
 @Entity({ name: 'film_actor' })
 export class FilmActor {
