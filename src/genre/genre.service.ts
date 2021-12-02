@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGenreDto } from './dto/create-genre.dto';
+import { UpdateGenreDto } from './dto/update-genre.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from './entities/genre.entity';
 import { Repository } from 'typeorm';
-import { throws } from 'assert';
+
 
 @Injectable()
 export class GenreService {
@@ -14,46 +15,46 @@ export class GenreService {
 
 
   // Create
-  async createGenre(createGenreDto: CreateGenreDto) {
-    const { name } = createGenreDto;
-    const genre = this.genreRepository.create({
-      name,
-    });
-
-    await this.genreRepository.save(genre);
-    return genre;
+  async create(createGenreDto: CreateGenreDto) {
+    const genre = this.genreRepository.create(createGenreDto);
+    return await this.genreRepository.save(genre);
   }
 
-
   // Read
-  async getGenreById(id: number): Promise<Genre> {
+  async findOne(id: number): Promise<Genre> {
     const found = await this.genreRepository.findOne(id);
 
     if (!found) {
       throw new NotFoundException(`Can't find Genre with id ${id}`);
     }
-
     return found;
   }
 
-  // Delete
-  async deleteGenre(id: number): Promise<void> {
-    const result = await this.genreRepository.delete(id);
-
-    if(result.affected === 0) {
+  // Update
+  async update(id: number ,updateGenreDto: UpdateGenreDto){
+    const genre = await this.findOne(id);
+    
+    if (!genre) {
       throw new NotFoundException(`Can't find Genre with id ${id}`);
     }
+
+    genre.name = updateGenreDto.name;
+    return await this.genreRepository.save(genre);
   }
 
-  // Update
-  async updateGenreStaus(id: number): Promise<Genre>{
-    const genre = await this.getGenreById(id);
-    await this.genreRepository.save(genre);
-    return genre;
+  // Delete
+  async delete(id: number) {
+    const result = await this.genreRepository.findOne(id);
+
+    if(!result) {
+      throw new NotFoundException(`Can't find Genre with id ${id}`);
+    }
+
+    return await this.genreRepository.remove(result);
   }
   
   // List
-  async getAllGenre(): Promise<Genre[]>{
+  async getAll(): Promise<Genre[]>{
     return this.genreRepository.find();
   }
 

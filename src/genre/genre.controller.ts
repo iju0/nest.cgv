@@ -12,42 +12,46 @@ import {
 } from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
+import { UpdateGenreDto } from './dto/update-genre.dto';
 import { Genre } from './entities/genre.entity';
 
-@Controller('Genres')
+
+@Controller('genres')
 export class GenreController {
   constructor(private genresService: GenreService) {}
 
   // Create
   @Post()
   @UsePipes(ValidationPipe)
-  createGenre(@Body() createGenreDto: CreateGenreDto): Promise<Genre> {
-    return this.genresService.createGenre(createGenreDto);
+  create(@Body() createGenreDto: CreateGenreDto): Promise<Genre> {
+    return this.genresService.create(createGenreDto);
+  }
+  
+  // List
+  @Get()
+  getAll(): Promise<Genre[]> {
+    return this.genresService.getAll();
   }
 
   // Read
-  @Get('/:id')
-  getGenreById(@Param('id') id: number): Promise<Genre> {
-    return this.genresService.getGenreById(id);
+  @Get(':id')
+  findOne(@Param('id') id: number): Promise<Genre> {
+    return this.genresService.findOne(id);
   }
 
   // Update
-  @Patch('/:id')
-  updateGenre(@Param('id', ParseIntPipe) id: number){
-    return this.genresService.updateGenreStaus(id);
+  @Patch(':id')
+  update(@Param('id', ParseIntPipe) id: number , @Body()updateGenreDto: UpdateGenreDto){
+    return this.genresService.update(id, updateGenreDto);
   }
 
   // Delete
-  @Delete('/:id')
-  async deleteGenre(@Param('id', ParseIntPipe) id): Promise<void> { 
-    return this.genresService.deleteGenre(id);
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id) { 
+    return this.genresService.delete(id);
   }
 
-  // List
-  @Get()
-  getAllGenre(): Promise<Genre[]> {
-    return this.genresService.getAllGenre();
-  }
+
 
 
 
