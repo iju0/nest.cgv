@@ -98,7 +98,15 @@ export class FilmService {
   }
 
   async findOne(id: number) {
-    return await this.filmRepository.findOne(id);
+    return await getConnection()
+      .getRepository(Film)
+      .createQueryBuilder('film')
+      .leftJoinAndSelect('film.actors', 'actor')
+      .leftJoinAndSelect('film.countries', 'country')
+      .leftJoinAndSelect('film.genres', 'genre')
+      .leftJoinAndSelect('film.directors', 'director')
+      .where('film.id = :id', { id })
+      .getOne()
   }
 
   async update(id: number, updateFilmDto: UpdateFilmDto) {

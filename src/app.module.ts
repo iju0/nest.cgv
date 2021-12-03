@@ -22,8 +22,8 @@ import { SalesModule } from './sales/sales.module';
 import { Sale } from './sales/entities/sale.entity';
 import { Genre } from './genre/entities/genre.entity';
 import { GenresModule } from './genre/genre.module';
-import { Director } from './director/entities/director.entity';
 import { DirectorModule } from './director/director.module';
+import { Director } from './director/entities/director.entity';
 
 @Module({
   imports: [
@@ -33,10 +33,10 @@ import { DirectorModule } from './director/director.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DATABASE_HOST,
+      host: process.env.DATABASE_HOST || 'localhost',
       port: 3306,
-      username: process.env.DATABASE_USERNAME || 'root',
-      password: process.env.DATABASE_PASSWORD || 'root',
+      username: process.env.DATABASE_USERNAME || 'username',
+      password: process.env.DATABASE_PASSWORD || 'password',
       database: 'cgv',
       entities: [
         Actor,
