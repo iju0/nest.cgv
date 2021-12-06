@@ -26,6 +26,10 @@ import { DirectorModule } from './director/director.module';
 import { Director } from './director/entities/director.entity';
 import { FilmDirector } from './film/entities/film-director.entity';
 import { FilmGenre } from './film/entities/film-genre.entity';
+import { ReservationModule } from './reservation/reservation.module';
+import { BillModule } from './bill/bill.module';
+import { Reservation } from './reservation/entities/reservation.entity';
+import { Bill } from './bill/entities/bill.entity';
 
 @Module({
   imports: [
@@ -53,6 +57,8 @@ import { FilmGenre } from './film/entities/film-genre.entity';
         Director,
         FilmDirector,
         FilmGenre,
+        Reservation,
+        Bill,
       ],
       synchronize: false,
       logging: true,
@@ -64,6 +70,8 @@ import { FilmGenre } from './film/entities/film-genre.entity';
     SalesModule,
     GenresModule,
     DirectorModule,
+    ReservationModule,
+    BillModule,
   ],
   controllers: [AppController],
   providers: [
