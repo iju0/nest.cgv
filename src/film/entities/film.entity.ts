@@ -33,7 +33,9 @@ export class Film {
   @Column()
   regDate: Date;
 
-  @ManyToMany(() => Actor)
+  @ManyToMany(() => Actor, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'film_actor',
     joinColumn: {
@@ -47,7 +49,9 @@ export class Film {
   })
   actors: Actor[];
 
-  @ManyToMany(() => Country)
+  @ManyToMany(() => Country, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'film_country',
     joinColumn: {

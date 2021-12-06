@@ -24,6 +24,8 @@ import { Genre } from './genre/entities/genre.entity';
 import { GenresModule } from './genre/genre.module';
 import { DirectorModule } from './director/director.module';
 import { Director } from './director/entities/director.entity';
+import { FilmDirector } from './film/entities/film-director.entity';
+import { FilmGenre } from './film/entities/film-genre.entity';
 
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import { Director } from './director/entities/director.entity';
         Sale,
         Genre,
         Director,
+        FilmDirector,
+        FilmGenre,
       ],
       synchronize: false,
       logging: true,

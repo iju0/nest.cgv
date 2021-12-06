@@ -9,6 +9,8 @@ import { FilmCountry } from './entities/film-country.entity';
 import { Country } from '../country/entities/country.entity';
 import { Genre } from '../genre/entities/genre.entity';
 import { Director } from '../director/entities/director.entity';
+import { FilmDirector } from './entities/film-director.entity';
+import { FilmGenre } from './entities/film-genre.entity';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { Director } from '../director/entities/director.entity';
       FilmCountry,
       Genre,
       Director,
+      FilmDirector,
+      FilmGenre,
     ]),
   ],
   controllers: [FilmController],
