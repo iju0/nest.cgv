@@ -19,3 +19,13 @@ nest.cgv
 
 # modeling
 ![img](./model.png)
+
+# Business Process
+1. 영화 생성 (Film)
+2. 판매 정책 생성 (Cinema, Seat, Sales)
+3. 예매 (Sales, Bill, Reservation)
+4. 예매 취소
+5. 조회 기능
+    - 영화 목록
+    - 영화 상영 정보 (예매 가능 좌석 표기)
+    - 내 예매 정보
