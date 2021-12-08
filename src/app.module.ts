@@ -22,6 +22,14 @@ import { SalesModule } from './sales/sales.module';
 import { Sale } from './sales/entities/sale.entity';
 import { Genre } from './genre/entities/genre.entity';
 import { GenresModule } from './genre/genre.module';
+import { DirectorModule } from './director/director.module';
+import { Director } from './director/entities/director.entity';
+import { FilmDirector } from './film/entities/film-director.entity';
+import { FilmGenre } from './film/entities/film-genre.entity';
+import { ReservationModule } from './reservation/reservation.module';
+import { BillModule } from './bill/bill.module';
+import { Reservation } from './reservation/entities/reservation.entity';
+import { Bill } from './bill/entities/bill.entity';
 
 @Module({
   imports: [
@@ -31,10 +39,10 @@ import { GenresModule } from './genre/genre.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DATABASE_HOST,
+      host: process.env.DATABASE_HOST || 'localhost',
       port: 3306,
-      username: process.env.DATABASE_USERNAME || 'root',
-      password: process.env.DATABASE_PASSWORD || 'root',
+      username: process.env.DATABASE_USERNAME || 'username',
+      password: process.env.DATABASE_PASSWORD || 'password',
       database: 'cgv',
       entities: [
         Actor,
@@ -46,6 +54,11 @@ import { GenresModule } from './genre/genre.module';
         Seat,
         Sale,
         Genre,
+        Director,
+        FilmDirector,
+        FilmGenre,
+        Reservation,
+        Bill,
       ],
       synchronize: false,
       logging: true,
@@ -56,6 +69,9 @@ import { GenresModule } from './genre/genre.module';
     SeatModule,
     SalesModule,
     GenresModule,
+    DirectorModule,
+    ReservationModule,
+    BillModule,
   ],
   controllers: [AppController],
   providers: [

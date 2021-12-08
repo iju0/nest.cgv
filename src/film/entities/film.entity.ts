@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { Actor } from '../../actor/entities/actor.entity';
 import { Country } from '../../country/entities/country.entity';
+import { Genre } from '../../genre/entities/genre.entity';
+import { Director } from '../../director/entities/director.entity';
 
 @Entity()
 export class Film {
@@ -31,7 +33,9 @@ export class Film {
   @Column()
   regDate: Date;
 
-  @ManyToMany(() => Actor)
+  @ManyToMany(() => Actor, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'film_actor',
     joinColumn: {
@@ -45,7 +49,9 @@ export class Film {
   })
   actors: Actor[];
 
-  @ManyToMany(() => Country)
+  @ManyToMany(() => Country, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'film_country',
     joinColumn: {
@@ -58,4 +64,32 @@ export class Film {
     },
   })
   countries: Country[];
+
+  @ManyToMany(() => Genre)
+  @JoinTable({
+    name: 'film_genre',
+    joinColumn: {
+      name: 'film_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'genre_id',
+      referencedColumnName: 'id',
+    },
+  })
+  genres: Genre[];
+
+  @ManyToMany(() => Director)
+  @JoinTable({
+    name: 'film_director',
+    joinColumn: {
+      name: 'film_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'director_id',
+      referencedColumnName: 'id',
+    },
+  })
+  directors: Director[];
 }

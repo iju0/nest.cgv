@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDirectorDto } from './dto/create-director.dto';
+import { UpdateDirectorDto } from './dto/update-director.dto';
 import { Director } from './entities/director.entity';
 
 @Injectable()
@@ -34,13 +35,26 @@ export class DirectorService {
     return director;
   }
 
-  async deleteDirector(id: number): Promise<void> {
-    const result = await this.directorRepository.delete(id);
+  async deleteDirector(id: number): Promise<Director> {
 
-    if (result.affected === 0) {
-      throw new NotFoundException('not found');
+    const director = await this.getDirectorById(id);
+
+    if (!director) {
+      throw new Error('등록된 정보가 없습니다');
     }
 
-    console.log('result : ', result);
+    return await this.directorRepository.remove(director);
+  }
+
+  async updateDirector(id: number, updateDirectorDto: UpdateDirectorDto){
+    const director = await this.getDirectorById(id);
+
+    if(!director){
+      throw new Error('등록된 정보가 없습니다')
+    }
+
+    director.name = updateDirectorDto.name;
+
+    return await this.directorRepository.save(director);
   }
 }
