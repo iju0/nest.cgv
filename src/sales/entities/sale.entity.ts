@@ -23,3 +23,4 @@ export class Sale {
   @Column({ name: 'seat_id', type: 'int' })
   seatId: number;
 }
+
