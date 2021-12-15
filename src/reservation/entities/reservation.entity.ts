@@ -1,3 +1,4 @@
+import { IsNotEmpty } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'reservation' })
@@ -15,17 +16,22 @@ export class Reservation {
   customer_phone: string;
 
   @Column({ type: 'int' })
+  @IsNotEmpty()
   sales_id: number;
 
   @Column({ type: 'int' })
+  @IsNotEmpty()
   sales_film_id: number;
 
   @Column({ type: 'int' })
+  @IsNotEmpty()
   sales_cinema_id: number;
 
   @Column({ type: 'int' })
+  @IsNotEmpty()
   sales_seat_id: number;
 
   @Column({ type: 'int' })
+  @IsNotEmpty()
   bill_id: number;
 }

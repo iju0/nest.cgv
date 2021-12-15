@@ -25,16 +25,55 @@ export class ReservationService {
     private filmRepository: Repository<Film>,
     @InjectRepository(Seat)
     private seatRepository: Repository<Seat>,
+
   ) {}
 
-  async create(createReservationDto: CreateReservationDto) {
-    const bill = await this.billRepository.findOne(
-      createReservationDto.bill_id,
-    );
+  async selectSaleFilmCinemaSeatBill(dto: CreateReservationDto | UpdateReservationDto){
 
-    if (!bill) {
+    console.log(dto.sale.id);
+
+    dto.bill = await this.billRepository.findOne(dto.bill.id);
+
+    if (!dto.bill) {
       throw new Error('청구정보를 찾을 수 없습니다');
     }
+
+    dto.sale = await this.saleRepository.findOne(dto.sale.id);
+
+    if(!dto.sale){
+      throw new Error('판매정보를 찾을 수 없습니다');
+    }
+
+    dto.film = await this.filmRepository.findOne(dto.film.id);
+
+    if(!dto.film){
+      throw new Error('필름정보를 찾을 수 없습니다');
+    }
+
+    dto.cinema = await this.cinemaRepository.findOne(dto.cinema.id);
+
+    if(!dto.cinema){
+      throw new Error('시네마정보를 찾을 수 없습니다');
+    }
+
+    dto.seat = await this.seatRepository.findOne(dto.seat.id);
+
+    if(!dto.seat){
+      throw new Error('좌석정보를 찾을 수 없습니다');
+    }
+
+    return dto;
+  }
+
+  async create(createReservationDto: CreateReservationDto) {
+
+     const check = await this.selectSaleFilmCinemaSeatBill(createReservationDto);
+
+     createReservationDto.bill = check.bill;
+     createReservationDto.sale = check.sale;
+     createReservationDto.cinema = check.cinema;
+     createReservationDto.film = check.film;
+     createReservationDto.seat = check.seat;
 
     const reservation = await this.reservationRepository.create(
       createReservationDto,
@@ -58,55 +97,29 @@ export class ReservationService {
   }
 
   async update(id: number, updateReservationDto: UpdateReservationDto) {
+    
     const reservation = await this.findOne(id);
-    const sales = await this.saleRepository.findOne(
-      updateReservationDto.sales_id,
-    );
-    const film = await this.filmRepository.findOne(
-      updateReservationDto.sales_film_id,
-    );
-    const cinema = await this.cinemaRepository.findOne(
-      updateReservationDto.sales_cinema_id,
-    );
-    const seat = await this.seatRepository.findOne(
-      updateReservationDto.sales_seat_id,
-    );
-    const bill = await this.billRepository.findOne(
-      updateReservationDto.bill_id,
-    );
 
     if (!reservation) {
       throw new Error('예약정보를 찾을 수 없습니다');
     }
 
-    if (!sales) {
-      throw new Error('판매정보를 찾을 수 없습니다');
-    }
+    const check = await this.selectSaleFilmCinemaSeatBill(updateReservationDto); 
 
-    if (!film) {
-      throw new Error('필름정보를 찾을 수 없습니다');
-    }
-
-    if (!cinema) {
-      throw new Error('영화정보를 찾을 수 없습니다');
-    }
-
-    if (!seat) {
-      throw new Error('좌석정보를 찾을 수 없습니다');
-    }
-
-    if (!bill) {
-      throw new Error('거래정보를 찾을 수 없습니다');
-    }
+     updateReservationDto.bill = check.bill;
+     updateReservationDto.sale = check.sale;
+     updateReservationDto.cinema = check.cinema;
+     updateReservationDto.film = check.film;
+     updateReservationDto.seat = check.seat;
 
     reservation.serial_number = updateReservationDto.serial_number;
     reservation.customer_name = updateReservationDto.customer_name;
     reservation.customer_phone = updateReservationDto.customer_phone;
-    reservation.sales_id = updateReservationDto.sales_id;
-    reservation.sales_film_id = updateReservationDto.sales_film_id;
-    reservation.sales_cinema_id = updateReservationDto.sales_cinema_id;
-    reservation.sales_seat_id = updateReservationDto.sales_seat_id;
-    reservation.bill_id = updateReservationDto.bill_id;
+    reservation.sales_id = updateReservationDto.sale.id;
+    reservation.sales_film_id = updateReservationDto.film.id;
+    reservation.sales_cinema_id = updateReservationDto.cinema.id;
+    reservation.sales_seat_id = updateReservationDto.seat.id;
+    reservation.bill_id = updateReservationDto.bill.id;
 
     return await this.reservationRepository.save(reservation);
   }
@@ -119,4 +132,5 @@ export class ReservationService {
     }
     return await this.reservationRepository.remove(reservation);
   }
+
 }
