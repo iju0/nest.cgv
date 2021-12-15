@@ -16,21 +16,6 @@ export class CreateReservationDto {
     @IsString()
     customer_phone: string;
 
-    // @IsNumber()
-    // sales_id: number;
-
-    // @IsNumber()
-    // sales_film_id: number;
-
-    // @IsNumber()
-    // sales_cinema_id: number;
-
-    // @IsNumber()
-    // sales_seat_id: number;
-
-    // @IsNumber()
-    // bill_id: number;
-
     @IsNotEmpty()
     sale: Sale;
 
